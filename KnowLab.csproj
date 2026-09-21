@@ -119,6 +119,7 @@
     <Compile Include="Engines\LearningEngine.cs" />
     <Compile Include="Engines\ScenarioEngine.cs" />
     <Compile Include="Engines\ScenarioExportEngine.cs" />
+    <Compile Include="Engines\SqlDatabaseHelper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

@@ -1,4 +1,4 @@
-﻿<%@ WebHandler Language="C#" Class="KnowLab.Handlers.ActionHandler" %>
+<%@ WebHandler Language="C#" Class="KnowLab.Handlers.ActionHandler" %>
 
 using System;
 using System.Web;
@@ -60,6 +60,70 @@ namespace KnowLab.Handlers
 
                     var report = CompatibilityEngine.Check(config);
                     context.Response.Write(js.Serialize(new { success = true, data = report }));
+                }
+                catch (Exception ex)
+                {
+                    context.Response.Write(js.Serialize(new { success = false, error = ex.Message }));
+                }
+            }
+            else if (action == "sql_test")
+            {
+                string msg;
+                bool ok = SqlDatabaseHelper.TestConnection(out msg);
+                context.Response.Write(js.Serialize(new { success = ok, message = msg }));
+            }
+            else if (action == "save_scenario_sql")
+            {
+                try
+                {
+                    string domainId = context.Request["domainId"] ?? "pc-building";
+                    string title = context.Request["title"] ?? "Kịch bản mẫu";
+                    string goal = context.Request["goal"] ?? "";
+                    string payload = context.Request["payload"] ?? "{}";
+
+                    int id = SqlDatabaseHelper.SaveScenario(domainId, title, goal, payload);
+                    context.Response.Write(js.Serialize(new { success = true, id = id, message = "Lưu kịch bản vào SQL Server thành công." }));
+                }
+                catch (Exception ex)
+                {
+                    context.Response.Write(js.Serialize(new { success = false, error = ex.Message }));
+                }
+            }
+            else if (action == "get_scenarios_sql")
+            {
+                try
+                {
+                    string domainId = context.Request["domainId"];
+                    var list = SqlDatabaseHelper.GetScenarios(domainId);
+                    context.Response.Write(js.Serialize(new { success = true, data = list }));
+                }
+                catch (Exception ex)
+                {
+                    context.Response.Write(js.Serialize(new { success = false, error = ex.Message }));
+                }
+            }
+            else if (action == "save_journal_sql")
+            {
+                try
+                {
+                    string goal = context.Request["goal"] ?? "";
+                    string assumptions = context.Request["assumptions"] ?? "";
+                    string decision = context.Request["decision"] ?? "";
+
+                    int id = SqlDatabaseHelper.SaveDecisionJournal(goal, assumptions, decision);
+                    context.Response.Write(js.Serialize(new { success = true, id = id, message = "Lưu Decision Journal vào SQL Server thành công." }));
+                }
+                catch (Exception ex)
+                {
+                    context.Response.Write(js.Serialize(new { success = false, error = ex.Message }));
+                }
+            }
+            else if (action == "get_journals_sql")
+            {
+                try
+                {
+                    var list = SqlDatabaseHelper.GetDecisionJournals();
+                    context.Response.Write(js.Serialize(new { success = true, data = list }));
                 }
                 catch (Exception ex)
                 {
