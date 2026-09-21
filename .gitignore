@@ -1,0 +1,21 @@
+## Visual Studio & .NET Build Artifacts
+bin/
+obj/
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.DotSettings.user
+
+## Temporary & Logs
+*.log
+scratch/
+.system_generated/
+
+## Windows thumbnails & OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/

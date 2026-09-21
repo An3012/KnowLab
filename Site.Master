@@ -1,0 +1,108 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Master.cs" Inherits="KnowLab.SiteMaster" %>
+
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - KnowLab nền tảng học & mô phỏng kiến thức</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/all.min.css" />
+    <link rel="stylesheet" href="css/knowlab.css" />
+
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="mainForm" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+
+        <!-- HEADER & NAVBAR -->
+        <nav id="nbar">
+            <div class="container-fluid px-4 d-flex align-items-center justify-content-between">
+                <a href="Default.aspx" class="d-flex align-items-center gap-2 text-decoration-none">
+                    <div class="logo-i"><i class="fa-solid fa-atom"></i></div>
+                    <span class="fs-5 fw-bold text-white">Know<span class="gt">Lab</span> <span class="badge bg-purple-subtle text-purple fs-6">ASP.NET</span></span>
+                </a>
+
+                <div class="d-none d-md-flex align-items-center gap-2">
+                    <asp:HyperLink ID="lnkHome" runat="server" NavigateUrl="Default.aspx?view=home" CssClass="nav-link-custom"><i class="fa-solid fa-house fa-sm"></i> Trang Chủ</asp:HyperLink>
+                    <asp:HyperLink ID="lnkLearn" runat="server" NavigateUrl="Default.aspx?view=learn" CssClass="nav-link-custom"><i class="fa-solid fa-graduation-cap fa-sm"></i> Lộ Trình Học</asp:HyperLink>
+                    <asp:HyperLink ID="lnkExplore" runat="server" NavigateUrl="Default.aspx?view=explore" CssClass="nav-link-custom"><i class="fa-solid fa-book-open fa-sm"></i> Thư Viện Concept</asp:HyperLink>
+                    <asp:HyperLink ID="lnkCompare" runat="server" NavigateUrl="Default.aspx?view=compare" CssClass="nav-link-custom"><i class="fa-solid fa-code-compare fa-sm"></i> Ma Trận So Sánh</asp:HyperLink>
+                    <asp:HyperLink ID="lnkLab" runat="server" NavigateUrl="Default.aspx?view=lab" CssClass="nav-link-custom"><i class="fa-solid fa-flask-vial fa-sm"></i> Lab Mô Phỏng</asp:HyperLink>
+                    <asp:HyperLink ID="lnkLifeSim" runat="server" NavigateUrl="Default.aspx?view=lifesim" CssClass="nav-link-custom"><i class="fa-solid fa-layer-group fa-sm"></i> Life Simulator</asp:HyperLink>
+                    <asp:HyperLink ID="lnkScenarios" runat="server" NavigateUrl="Default.aspx?view=scenarios" CssClass="nav-link-custom"><i class="fa-solid fa-bookmark fa-sm"></i> Scenarios Đã Lưu</asp:HyperLink>
+                </div>
+
+                <div class="d-flex align-items-center gap-3">
+                    <button type="button" class="boc d-flex align-items-center justify-content-center" id="thbtn" style="width:40px;height:40px;padding:0;border-radius:12px" title="Đổi Theme Sáng/Tối" onclick="toggleKnowLabTheme()">
+                        <i class="fa-solid fa-sun" id="suni" style="display:none"></i>
+                        <i class="fa-solid fa-moon" id="mooni"></i>
+                    </button>
+                    <a href="Default.aspx?view=lab" class="bgrd d-none d-sm-inline-flex text-decoration-none">
+                        <i class="fa-solid fa-play fa-sm"></i> Thử nghiệm ngay
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- APP CONTAINER -->
+        <div class="app-container">
+            <aside class="app-sidebar">
+                <div class="sidebar-section-title">Navigation ASP.NET</div>
+                <a href="Default.aspx?view=home" class="sidebar-item"><i class="fa-solid fa-compass"></i> Khám Phá Intent</a>
+                <a href="Default.aspx?view=learn" class="sidebar-item"><i class="fa-solid fa-graduation-cap"></i> Học Lộ Trình L0-L4</a>
+                <a href="Default.aspx?view=explore" class="sidebar-item"><i class="fa-solid fa-book-bookmark"></i> Tra Cứu Glossary</a>
+                
+                <div class="sidebar-section-title">Thực Hành & Tính Toán</div>
+                <a href="Default.aspx?view=compare" class="sidebar-item"><i class="fa-solid fa-scale-balanced"></i> Ma Trận So Sánh</a>
+                <a href="Default.aspx?view=lab" class="sidebar-item"><i class="fa-solid fa-flask-vial"></i> Universal Lab Engine</a>
+                <a href="Default.aspx?view=lifesim" class="sidebar-item"><i class="fa-solid fa-layer-group text-purple"></i> Cross-Domain Life Simulator</a>
+                <a href="Default.aspx?view=scenarios" class="sidebar-item"><i class="fa-solid fa-box-archive"></i> Scenario & Decision Log</a>
+
+                <div class="sidebar-section-title">Domain Nổi Bật</div>
+                <a href="Default.aspx?view=learn&domain=real-estate" class="sidebar-item"><i class="fa-solid fa-building-user text-primary"></i> Bất Động Sản</a>
+                <a href="Default.aspx?view=learn&domain=pc-building" class="sidebar-item"><i class="fa-solid fa-microchip text-info"></i> Build PC</a>
+                <a href="Default.aspx?view=learn&domain=cars" class="sidebar-item"><i class="fa-solid fa-car text-success"></i> Ô Tô</a>
+                <a href="Default.aspx?view=learn&domain=motorcycles" class="sidebar-item"><i class="fa-solid fa-motorcycle text-warning"></i> Xe Máy</a>
+                <a href="Default.aspx?view=learn&domain=home" class="sidebar-item"><i class="fa-solid fa-house-hammer text-danger"></i> Xây / Sửa Nhà</a>
+                <a href="Default.aspx?view=learn&domain=feng-shui" class="sidebar-item"><i class="fa-solid fa-compass text-purple"></i> Phong Thủy Vui</a>
+            </aside>
+
+            <main class="app-main">
+                <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                </asp:ContentPlaceHolder>
+            </main>
+        </div>
+    </form>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/chart.umd.min.js"></script>
+    <script>
+        function toggleKnowLabTheme() {
+            var current = document.documentElement.getAttribute('data-theme') || 'dark';
+            var next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('knowlab_theme', next);
+            updateThemeIcons(next);
+        }
+        function updateThemeIcons(theme) {
+            var sun = document.getElementById('suni');
+            var moon = document.getElementById('mooni');
+            if (sun && moon) {
+                if (theme === 'light') { sun.style.display = 'inline-block'; moon.style.display = 'none'; }
+                else { sun.style.display = 'none'; moon.style.display = 'inline-block'; }
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            var saved = localStorage.getItem('knowlab_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', saved);
+            updateThemeIcons(saved);
+        });
+    </script>
+</body>
+</html>

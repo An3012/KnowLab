@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KnowLab — Nền Tảng Học & Mô Phỏng Kiến Thức Thực Tế</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 Grid & Utility -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="css/all.min.css">
+  <!-- Custom KnowLab Design System -->
+  <link rel="stylesheet" href="css/knowlab.css">
+</head>
+<body>
+
+  <!-- ================= HEADER & NAVBAR ================= -->
+  <nav id="nbar">
+    <div class="container-fluid px-4 d-flex align-items-center justify-content-between">
+      <a href="#" class="d-flex align-items-center gap-2 text-decoration-none" onclick="app.switchView('home'); return false;">
+        <div class="logo-i"><i class="fa-solid fa-atom"></i></div>
+        <span class="fs-5 fw-bold text-white">Know<span class="gt">Lab</span></span>
+      </a>
+
+      <div class="d-none d-md-flex align-items-center gap-2">
+        <a class="nav-link-custom active" data-view="home" onclick="app.switchView('home')"><i class="fa-solid fa-house fa-sm"></i> Trang Chủ</a>
+        <a class="nav-link-custom" data-view="learn" onclick="app.switchView('learn')"><i class="fa-solid fa-graduation-cap fa-sm"></i> Học Lộ Trình</a>
+        <a class="nav-link-custom" data-view="explore" onclick="app.switchView('explore')"><i class="fa-solid fa-book-open fa-sm"></i> Thư Viện Concept</a>
+        <a class="nav-link-custom" data-view="compare" onclick="app.switchView('compare')"><i class="fa-solid fa-code-compare fa-sm"></i> So Sánh Phương Án</a>
+        <a class="nav-link-custom" data-view="lab" onclick="app.switchView('lab')"><i class="fa-solid fa-flask-vial fa-sm"></i> Phòng Mô Phỏng (Lab)</a>
+        <a class="nav-link-custom" data-view="scenarios" onclick="app.switchView('scenarios')"><i class="fa-solid fa-bookmark fa-sm"></i> Scenarios Đã Lưu</a>
+      </div>
+
+      <div class="d-flex align-items-center gap-3">
+        <button class="boc d-flex align-items-center justify-content-center" id="thbtn" style="width:40px;height:40px;padding:0;border-radius:12px" title="Đổi Giao Diện Sáng/Tối" onclick="app.toggleTheme()">
+          <i class="fa-solid fa-sun" id="suni" style="display:none"></i>
+          <i class="fa-solid fa-moon" id="mooni"></i>
+        </button>
+        <button class="bgrd d-none d-sm-inline-flex" onclick="app.switchView('lab')">
+          <i class="fa-solid fa-play fa-sm"></i> Thử nghiệm ngay
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ================= APP CONTAINER ================= -->
+  <div class="app-container">
+    
+    <!-- SIDEBAR -->
+    <aside class="app-sidebar" id="appSidebar">
+      <div class="sidebar-section-title">Navigation Main</div>
+      <button class="sidebar-item active" data-view="home" onclick="app.switchView('home')"><i class="fa-solid fa-compass"></i> Khám Phá Intent</button>
+      <button class="sidebar-item" data-view="learn" onclick="app.switchView('learn')"><i class="fa-solid fa-graduation-cap"></i> Học Lộ Trình L0-L4</button>
+      <button class="sidebar-item" data-view="explore" onclick="app.switchView('explore')"><i class="fa-solid fa-book-bookmark"></i> Tra Cứu Glossary</button>
+
+      <div class="sidebar-section-title">Thực Hành & Tính Toán</div>
+      <button class="sidebar-item" data-view="compare" onclick="app.switchView('compare')"><i class="fa-solid fa-scale-balanced"></i> Ma Trận So Sánh</button>
+      <button class="sidebar-item" data-view="lab" onclick="app.switchView('lab')"><i class="fa-solid fa-flask-vial"></i> Universal Lab Engine</button>
+      <button class="sidebar-item" data-view="scenarios" onclick="app.switchView('scenarios')"><i class="fa-solid fa-box-archive"></i> Scenario & Decision Journal</button>
+
+      <div class="sidebar-section-title">Domain Nổi Bật</div>
+      <button class="sidebar-item" onclick="app.openDomain('real-estate')"><i class="fa-solid fa-building-user text-primary"></i> Bất Động Sản</button>
+      <button class="sidebar-item" onclick="app.openDomain('pc-building')"><i class="fa-solid fa-microchip text-info"></i> Build PC</button>
+      <button class="sidebar-item" onclick="app.openDomain('cars')"><i class="fa-solid fa-car text-success"></i> Ô Tô</button>
+      <button class="sidebar-item" onclick="app.openDomain('motorcycles')"><i class="fa-solid fa-motorcycle text-warning"></i> Xe Máy</button>
+      <button class="sidebar-item" onclick="app.openDomain('home')"><i class="fa-solid fa-house-hammer text-danger"></i> Xây / Sửa Nhà</button>
+      <button class="sidebar-item" onclick="app.openDomain('feng-shui')"><i class="fa-solid fa-compass text-purple"></i> Phong Thủy Vui</button>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="app-main">
+      
+      <!-- ================= VIEW 1: HOME ================= -->
+      <section id="view-home" class="view-section">
+        <div class="intent-hero">
+          <div class="intent-badge"><i class="fa-solid fa-sparkles"></i> Zero-Knowledge First Platform</div>
+          <h1 class="intent-title">Bạn muốn <span class="gt">hiểu điều gì</span> hôm nay?</h1>
+          <p class="text-secondary mx-auto mb-4" style="max-width: 620px; font-size: 1.05rem;">
+            Biến người hoàn toàn chưa biết gì thành người có thể <strong>hiểu &rarr; học &rarr; thử &rarr; tính toán &rarr; mô phỏng &rarr; so sánh &rarr; ra quyết định</strong> có cơ sở.
+          </p>
+
+          <div class="intent-search-box">
+            <i class="fa-solid fa-magnifying-glass intent-search-icon"></i>
+            <input type="text" class="intent-search-input" id="homeSearchInput" placeholder="Nhập từ khóa (vd: TDP, DTI, Vay mua nhà, Bottleneck, TCO ô tô...)" onkeyup="app.handleSearch(this.value)">
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div>
+            <h3 class="fw-bold mb-1">6 Lĩnh Vực Kiến Thức</h3>
+            <p class="text-secondary small mb-0">Chọn lĩnh vực bạn muốn học hoặc bắt đầu tính toán mô phỏng.</p>
+          </div>
+        </div>
+
+        <div class="domain-grid" id="domainGridContainer">
+          <!-- Dynamic rendering from seedData -->
+        </div>
+      </section>
+
+      <!-- ================= VIEW: DOMAIN HUB (DOMAIN FIRST ARCHITECTURE) ================= -->
+      <section id="view-domain" class="view-section" style="display:none">
+        <div id="domainHubHeader">
+          <!-- Rendered dynamically by app.renderDomainHub() -->
+        </div>
+
+        <div id="domainNavTabs" class="domain-nav-tabs mb-4">
+          <!-- 8 Tabs rendered dynamically: Overview, Paths, Concepts, Builder/Tools, Simulation, Compare, Presets, Scenarios -->
+        </div>
+
+        <div id="domainTabContent">
+          <!-- Active Tab Content rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- ================= VIEW 2: LEARN ================= -->
+      <section id="view-learn" class="view-section" style="display:none">
+        <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+          <div>
+            <h2 class="fw-bold mb-1"><i class="fa-solid fa-graduation-cap text-purple me-2"></i>Học Theo Lộ Trình</h2>
+            <p class="text-secondary mb-0">Học từ Level 0 (Chưa biết gì) đến Level 4 (Chuyên sâu).</p>
+          </div>
+          <div class="d-flex gap-2">
+            <select class="lab-control" id="learnDomainSelect" onchange="app.renderLearnView()" style="width: 240px;">
+              <option value="pc-building">Build PC Chuyên Sâu</option>
+              <option value="real-estate">Bất Động Sản & Tài Chính</option>
+              <option value="cars">Ô Tô & Chi Phí Sở Hữu</option>
+              <option value="motorcycles">Xe Máy & Đi Lại Đô Thị</option>
+              <option value="home">Xây / Sửa Nhà Dân Dụng</option>
+              <option value="feng-shui">Phong Thủy & Vi Khí Hậu</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row g-4" id="learnContentContainer">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- ================= VIEW 3: EXPLORE & GLOSSARY ================= -->
+      <section id="view-explore" class="view-section" style="display:none">
+        <div class="mb-4">
+          <h2 class="fw-bold mb-1"><i class="fa-solid fa-book-open text-info me-2"></i>Tra Cứu Khái Niệm & Glossary</h2>
+          <p class="text-secondary mb-0">Từ điển thuật ngữ được giải thích dễ hiểu kèm ví dụ thực tế.</p>
+        </div>
+
+        <div class="gc p-4 mb-4">
+          <div class="row g-3">
+            <div class="col-md-8">
+              <input type="text" class="lab-control" id="glossarySearchInput" placeholder="Tìm thuật ngữ (vd: TDP, DTI, Dư nợ giảm dần, VRM, Heatsink, Hệ số mở rộng...)" onkeyup="app.renderGlossaryView(this.value)">
+            </div>
+            <div class="col-md-4">
+              <select class="lab-control" id="glossaryDomainFilter" onchange="app.renderGlossaryView()">
+                <option value="all">Tất cả Lĩnh Vực</option>
+                <option value="pc-building">Build PC</option>
+                <option value="real-estate">Bất Động Sản</option>
+                <option value="cars">Ô Tô</option>
+                <option value="motorcycles">Xe Máy</option>
+                <option value="home">Xây / Sửa Nhà</option>
+                <option value="feng-shui">Phong Thủy Vi Khí Hậu</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3" id="glossaryGridContainer">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- ================= VIEW 4: COMPARE ================= -->
+      <section id="view-compare" class="view-section" style="display:none">
+        <div class="mb-4">
+          <h2 class="fw-bold mb-1"><i class="fa-solid fa-code-compare text-success me-2"></i>Ma Trận So Sánh Đa Phương Án</h2>
+          <p class="text-secondary mb-0">So sánh tiêu chí & trade-off giữa các lựa chọn mà không ép buộc 1 đáp án duy nhất.</p>
+        </div>
+
+        <div class="gc p-4 mb-4">
+          <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+            <h5 class="fw-bold mb-0">Chọn Danh Mục So Sánh</h5>
+            <div class="d-flex gap-2 flex-wrap">
+              <button class="boc active" onclick="app.renderCompareCategory('pc-cpu')"><i class="fa-solid fa-microchip me-1"></i> CPU PC (Gaming & Workstation)</button>
+              <button class="boc" onclick="app.renderCompareCategory('re-loan')"><i class="fa-solid fa-building-columns me-1"></i> Gói Vay Mua Nhà (Cố Định vs Thả Nổi)</button>
+              <button class="boc" onclick="app.renderCompareCategory('car-powertrain')"><i class="fa-solid fa-car me-1"></i> Động Cơ Ô Tô (Xăng vs Hybrid vs EV)</button>
+              <button class="boc" onclick="app.renderCompareCategory('moto-cooling')"><i class="fa-solid fa-motorcycle me-1"></i> Làm Mát Xe Máy (Không Khí vs Dung Dịch)</button>
+              <button class="boc" onclick="app.renderCompareCategory('home-foundation')"><i class="fa-solid fa-house-chimney-crack me-1"></i> Móng Nhà (Móng Đơn vs Cọc)</button>
+            </div>
+          </div>
+          <div id="compareTableContainer" class="table-responsive">
+            <!-- Table rendered dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= VIEW 5: LAB & SIMULATION ================= -->
+      <section id="view-lab" class="view-section" style="display:none">
+        <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+          <div>
+            <h2 class="fw-bold mb-1"><i class="fa-solid fa-flask-vial text-warning me-2"></i>Phòng Thử Nghiệm & Mô Phỏng (Lab)</h2>
+            <p class="text-secondary mb-0">Nhập số liệu, thay đổi biến số "What-if" và xem kết quả tính toán minh bạch.</p>
+          </div>
+          <div class="d-flex gap-2 flex-wrap">
+            <button class="boc active" id="labTab-re" onclick="app.switchLabDomain('real-estate')">BĐS Mortgage</button>
+            <button class="boc" id="labTab-pc" onclick="app.switchLabDomain('pc-building')">PC Power/Nguồn</button>
+            <button class="boc" id="labTab-car" onclick="app.switchLabDomain('cars')">Ô Tô TCO</button>
+            <button class="boc" id="labTab-moto" onclick="app.switchLabDomain('motorcycles')">Xe Máy Cost</button>
+            <button class="boc" id="labTab-home" onclick="app.switchLabDomain('home')">Xây/Sửa Nhà</button>
+            <button class="boc" id="labTab-fs" onclick="app.switchLabDomain('feng-shui')">Phong Thủy Vi Khí Hậu</button>
+          </div>
+        </div>
+
+        <div class="row g-4" id="labContainer">
+          <!-- Interactive Lab Wizard & Calculator rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- ================= VIEW 6: SCENARIOS & JOURNAL ================= -->
+      <section id="view-scenarios" class="view-section" style="display:none">
+        <div class="mb-4">
+          <h2 class="fw-bold mb-1"><i class="fa-solid fa-bookmark text-primary me-2"></i>Scenario & Decision Journal</h2>
+          <p class="text-secondary mb-0">Lưu lại các kịch bản thử nghiệm A/B/C và nhật ký ra quyết định cá nhân.</p>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-lg-7">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <h5 class="fw-bold mb-0">Các Scenario Đã Lưu</h5>
+              <span class="badge bg-primary" id="savedScenarioCount">0 Scenarios</span>
+            </div>
+            <div id="scenariosListContainer">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <div class="gc p-4">
+              <h5 class="fw-bold mb-3"><i class="fa-solid fa-pen-to-square text-warning me-2"></i>Ghi Nhật Ký Quyết Định</h5>
+              <form id="journalForm" onsubmit="app.saveJournalEntry(event)">
+                <div class="lab-input-group">
+                  <label class="lab-label">Mục tiêu của bạn:</label>
+                  <input type="text" class="lab-control" id="jGoal" placeholder="Vd: Quyết định mua căn hộ 2.5 tỷ hay đi thuê?" required>
+                </div>
+                <div class="lab-input-group">
+                  <label class="lab-label">Giả định chính:</label>
+                  <textarea class="lab-control" id="jAssumptions" rows="2" placeholder="Vd: Lãi suất thả nổi 10.5%, giá thuê nhà tăng 5%/năm..."></textarea>
+                </div>
+                <div class="lab-input-group">
+                  <label class="lab-label">Quyết định của tôi:</label>
+                  <textarea class="lab-control" id="jDecision" rows="2" placeholder="Vd: Chọn vay 1 tỷ trong 15 năm, trả trước 40%..."></textarea>
+                </div>
+                <button type="submit" class="bgrd w-100 justify-content-center">
+                  <i class="fa-solid fa-floppy-disk me-1"></i> Lưu Vào Decision Journal
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Component Picker Modal (PC Builder & Tools) -->
+  <div class="modal fade" id="componentPickerModal" tabindex="-1" aria-labelledby="componentPickerTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content gc border-0 shadow-lg" style="background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color) !important;">
+        <div class="modal-header border-bottom border-secondary border-opacity-25">
+          <h5 class="modal-title fw-bold" id="componentPickerTitle"><i class="fa-solid fa-microchip me-2 text-primary"></i>Chọn Linh Kiện</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-3" id="componentPickerBody">
+          <!-- Populated dynamically by app.openPickerModal -->
+        </div>
+        <div class="modal-footer border-top border-secondary border-opacity-25">
+          <button type="button" class="boc" data-bs-dismiss="modal">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/chart.umd.min.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
