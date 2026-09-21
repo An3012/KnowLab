@@ -39,27 +39,6 @@ namespace KnowLab.Engines
         public DateTime NgayTao { get; set; }
     }
 
-    public class ScenarioEntity
-    {
-        public int Id { get; set; }
-        public string DomainId { get; set; }
-        public string Title { get; set; }
-        public string Goal { get; set; }
-        public string PayloadJson { get; set; }
-        public string EngineVersion { get; set; }
-        public string DataVersion { get; set; }
-        public DateTime CreatedAt { get; set; }
-    }
-
-    public class DecisionJournalEntity
-    {
-        public int Id { get; set; }
-        public string Goal { get; set; }
-        public string Assumptions { get; set; }
-        public string Decision { get; set; }
-        public DateTime CreatedAt { get; set; }
-    }
-
     /// <summary>
     /// SqlDatabaseHelper: Tuan thu nghiem ngat MASTER_EXECUTE/SQL_SAVE_PROMPT.md:
     /// 1. Khong dung MERGE cho CRUD thong thuong (Dung IF EXISTS -> UPDATE ELSE INSERT).
@@ -354,59 +333,6 @@ namespace KnowLab.Engines
                         });
                     }
                 }
-            }
-            return list;
-        }
-
-        #endregion
-
-        #region Backward Compatibility Wrappers
-
-        public static int SaveScenario(string domainId, string title, string goal, string payloadJson, string engineVersion = "1.0.0", string dataVersion = "2026-01")
-        {
-            return SaveOrUpdateKichBan(null, domainId, title, goal, payloadJson, engineVersion, dataVersion);
-        }
-
-        public static List<ScenarioEntity> GetScenarios(string domainId = null)
-        {
-            var kichBans = GetKichBanList(domainId);
-            var list = new List<ScenarioEntity>();
-            foreach (var kb in kichBans)
-            {
-                list.Add(new ScenarioEntity
-                {
-                    Id = kb.MaKichBan,
-                    DomainId = kb.MaLinhVuc,
-                    Title = kb.TieuDe,
-                    Goal = kb.MucTieu,
-                    PayloadJson = kb.DuLieuJson,
-                    EngineVersion = kb.PhienBanEngine,
-                    DataVersion = kb.PhienBanData,
-                    CreatedAt = kb.NgayTao
-                });
-            }
-            return list;
-        }
-
-        public static int SaveDecisionJournal(string goal, string assumptions, string decision)
-        {
-            return SaveNhatKyQuyetDinh(goal, assumptions, decision);
-        }
-
-        public static List<DecisionJournalEntity> GetDecisionJournals()
-        {
-            var nks = GetNhatKyQuyetDinhList();
-            var list = new List<DecisionJournalEntity>();
-            foreach (var nk in nks)
-            {
-                list.Add(new DecisionJournalEntity
-                {
-                    Id = nk.MaNhatKy,
-                    Goal = nk.MucTieu,
-                    Assumptions = nk.GiaDinh,
-                    Decision = nk.QuyetDinh,
-                    CreatedAt = nk.NgayTao
-                });
             }
             return list;
         }

@@ -72,29 +72,33 @@ namespace KnowLab.Handlers
                 bool ok = SqlDatabaseHelper.TestConnection(out msg);
                 context.Response.Write(js.Serialize(new { success = ok, message = msg }));
             }
-            else if (action == "save_scenario_sql")
+            else if (action == "save_scenario_sql" || action == "save_kichban_sql")
             {
                 try
                 {
+                    int? id = null;
+                    if (!string.IsNullOrEmpty(context.Request["id"])) id = Convert.ToInt32(context.Request["id"]);
                     string domainId = context.Request["domainId"] ?? "pc-building";
                     string title = context.Request["title"] ?? "Kịch bản mẫu";
                     string goal = context.Request["goal"] ?? "";
                     string payload = context.Request["payload"] ?? "{}";
 
-                    int id = SqlDatabaseHelper.SaveScenario(domainId, title, goal, payload);
-                    context.Response.Write(js.Serialize(new { success = true, id = id, message = "Lưu kịch bản vào SQL Server thành công." }));
+                    int savedId = SqlDatabaseHelper.SaveOrUpdateKichBan(id, domainId, title, goal, payload);
+                    context.Response.Write(js.Serialize(new { success = true, id = savedId, message = "Lưu kịch bản vào SQL Server thành công (No MERGE, IF EXISTS -> UPDATE)." }));
                 }
                 catch (Exception ex)
                 {
                     context.Response.Write(js.Serialize(new { success = false, error = ex.Message }));
                 }
             }
-            else if (action == "get_scenarios_sql")
+            else if (action == "get_scenarios_sql" || action == "get_kichban_sql")
             {
                 try
                 {
                     string domainId = context.Request["domainId"];
-                    var list = SqlDatabaseHelper.GetScenarios(domainId);
+                    int page = string.IsNullOrEmpty(context.Request["page"]) ? 1 : Convert.ToInt32(context.Request["page"]);
+                    int pageSize = string.IsNullOrEmpty(context.Request["pageSize"]) ? 50 : Convert.ToInt32(context.Request["pageSize"]);
+                    var list = SqlDatabaseHelper.GetKichBanList(domainId, page, pageSize);
                     context.Response.Write(js.Serialize(new { success = true, data = list }));
                 }
                 catch (Exception ex)
@@ -102,7 +106,7 @@ namespace KnowLab.Handlers
                     context.Response.Write(js.Serialize(new { success = false, error = ex.Message }));
                 }
             }
-            else if (action == "save_journal_sql")
+            else if (action == "save_journal_sql" || action == "save_nhatky_sql")
             {
                 try
                 {
@@ -110,7 +114,7 @@ namespace KnowLab.Handlers
                     string assumptions = context.Request["assumptions"] ?? "";
                     string decision = context.Request["decision"] ?? "";
 
-                    int id = SqlDatabaseHelper.SaveDecisionJournal(goal, assumptions, decision);
+                    int id = SqlDatabaseHelper.SaveNhatKyQuyetDinh(goal, assumptions, decision);
                     context.Response.Write(js.Serialize(new { success = true, id = id, message = "Lưu Decision Journal vào SQL Server thành công." }));
                 }
                 catch (Exception ex)
@@ -118,11 +122,48 @@ namespace KnowLab.Handlers
                     context.Response.Write(js.Serialize(new { success = false, error = ex.Message }));
                 }
             }
-            else if (action == "get_journals_sql")
+            else if (action == "get_journals_sql" || action == "get_nhatky_sql")
             {
                 try
                 {
-                    var list = SqlDatabaseHelper.GetDecisionJournals();
+                    int page = string.IsNullOrEmpty(context.Request["page"]) ? 1 : Convert.ToInt32(context.Request["page"]);
+                    int pageSize = string.IsNullOrEmpty(context.Request["pageSize"]) ? 50 : Convert.ToInt32(context.Request["pageSize"]);
+                    var list = SqlDatabaseHelper.GetNhatKyQuyetDinhList(page, pageSize);
+                    context.Response.Write(js.Serialize(new { success = true, data = list }));
+                }
+                catch (Exception ex)
+                {
+                    context.Response.Write(js.Serialize(new { success = false, error = ex.Message }));
+                }
+            }
+            else if (action == "save_cauhinh_sql")
+            {
+                try
+                {
+                    int? id = null;
+                    if (!string.IsNullOrEmpty(context.Request["id"])) id = Convert.ToInt32(context.Request["id"]);
+                    string ten = context.Request["tenCauHinh"] ?? "Cấu hình PC mới";
+                    decimal gia = Convert.ToDecimal(context.Request["tongGia"] ?? "0");
+                    int w = Convert.ToInt32(context.Request["congSuatW"] ?? "0");
+                    decimal hr = Convert.ToDecimal(context.Request["phanTramDuPhong"] ?? "20");
+                    bool tuongThich = (context.Request["tuongThich"] ?? "true").ToLower() == "true";
+                    string chiTietJson = context.Request["chiTietJson"] ?? "{}";
+
+                    int savedId = SqlDatabaseHelper.SaveOrUpdateCauHinhMayTinh(id, ten, gia, w, hr, tuongThich, chiTietJson);
+                    context.Response.Write(js.Serialize(new { success = true, id = savedId, message = "Lưu cấu hình máy tính vào SQL Server thành công." }));
+                }
+                catch (Exception ex)
+                {
+                    context.Response.Write(js.Serialize(new { success = false, error = ex.Message }));
+                }
+            }
+            else if (action == "get_cauhinh_sql")
+            {
+                try
+                {
+                    int page = string.IsNullOrEmpty(context.Request["page"]) ? 1 : Convert.ToInt32(context.Request["page"]);
+                    int pageSize = string.IsNullOrEmpty(context.Request["pageSize"]) ? 50 : Convert.ToInt32(context.Request["pageSize"]);
+                    var list = SqlDatabaseHelper.GetCauHinhMayTinhList(page, pageSize);
                     context.Response.Write(js.Serialize(new { success = true, data = list }));
                 }
                 catch (Exception ex)
